@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	dwklint "github.com/CVE-2008-0166/dwklint"
+	dwklint "github.com/CVE-2008-0166/dwklint/v2"
 )
 
 func main() {
@@ -13,14 +13,15 @@ func main() {
 	defer func() { os.Exit(int(exitCode)) }()
 
 	if len(os.Args) != 3 {
-		fmt.Printf("Usage: %s <blocklist_directory> <cert_file>\n", os.Args[0])
+		fmt.Printf("Usage: %s <blocklist_database_path> <cert_file>\n", os.Args[0])
 		return
 	}
 
-	if err := dwklint.LoadBlocklists(os.Args[1]); err != nil {
+	if err := dwklint.OpenBlocklistDatabase(os.Args[1]); err != nil {
 		fmt.Printf("Error: %v\n", err)
 		return
 	}
+	defer dwklint.CloseBlocklistDatabase()
 
 	certfile, err := os.ReadFile(os.Args[2])
 	if err != nil {
