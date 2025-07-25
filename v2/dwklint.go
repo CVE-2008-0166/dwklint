@@ -86,6 +86,8 @@ func HasDebianWeakKey(cert *x509.Certificate) DebianWeakKeyStatus {
 			tableSuffix = "secp256r1"
 		case "P-384":
 			tableSuffix = "secp384r1"
+		case "P-521":
+			tableSuffix = "secp521r1"
 		default:
 			return Unknown
 		}
